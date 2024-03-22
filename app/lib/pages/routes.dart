@@ -44,6 +44,15 @@ class _RoutesState extends State<Routes> {
               Navigator.pushNamed(context, '/profile');
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout_rounded),
+            onPressed: () {
+              UserProvider userProvider =
+                  Provider.of<UserProvider>(context, listen: false);
+              userProvider.logOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          ),
           PopupMenuButton<Locale>(
             icon: const Icon(Icons.language),
             onSelected: (Locale locale) {
@@ -76,33 +85,33 @@ class _RoutesState extends State<Routes> {
         child: _buildPageContent(_currentIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         onTap: (index) => setState(() => _currentIndex = index),
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
             label: Languages.of(context)!.home,
-            // label: "Home",
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.yard),
+            icon: const Icon(Icons.camera),
             label: Languages.of(context)!.marketsNearby,
-            // label: "Markets Nearby",
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.water_drop),
+            icon: const Icon(
+              Icons.assistant_outlined,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             label: Languages.of(context)!.weatherSoil,
-            // label: "Weather n Soil",
-            backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.calendar_month),
-            label: Languages.of(context)!.personalCal,
-            // label: "Personal Calender",
+            icon: const Icon(
+              Icons.assistant_outlined,
+            ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
+            label: Languages.of(context)!.weatherSoil,
           ),
         ],
       ),
@@ -113,6 +122,12 @@ class _RoutesState extends State<Routes> {
     switch (index) {
       case 0:
         return const HomePage();
+      case 1:
+        return Container();
+      case 2:
+        return Container();
+      case 3:
+        return Container();
       default:
         return Container();
     }

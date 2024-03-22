@@ -1,149 +1,247 @@
-import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:app/components/select_lang.dart';
 import 'package:app/lang/abs_lan.dart';
-import 'package:app/providers/providers.dart';
+import 'package:app/providers/user_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/user_provider.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LogInPageState();
+  State<LogInPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
-
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   Locale chooseLang = const Locale('en');
-
-  Map<String, String> lang = {
-    'English': 'en',
-    'हिन्दी': 'hi', // Hindi
-    'मराठी': 'mr', // Marathi
-    'বাংলা': 'bn', // Bengali
-    'தமிழ்': 'ta', // Tamil
-    'ಕನ್ನಡ': 'kn', // Kannada
-  };
-
-  late User _user;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const SizedBox(height: 50),
-              Text(
-                // Languages.of(context)!.appName,
-                'Krishi Sahayak',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 50),
-              Card(
-                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                elevation: 1,
-                child: Wrap(
-                  spacing: 5,
-                  children: lang.entries
-                      .map((e) => Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: ChoiceChip(
-                              label: Text(
-                                e.key,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              onSelected: (value) =>
-                                  Provider.of<LocaleProvider>(context,
-                                          listen: false)
-                                      .setLocale(Locale(e.value)),
-                              selected: Locale(e.value) ==
-                                  Provider.of<LocaleProvider>(context).locale,
-                              selectedColor:
-                                  Theme.of(context).colorScheme.secondary,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 1000),
+                        child: Text(
+                          Languages.of(context)!.appName,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      children: <Widget>[
+                        FadeInUp(
+                          child: selectlangCard(context),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        FadeInUp(
+                          duration: const Duration(
+                            milliseconds: 1200,
+                          ),
+                          child: makeInput(
+                            label: Languages.of(context)!.email,
+                            controller: _emailController,
+                          ),
+                        ),
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1300),
+                          child: makeInput(
+                            label: Languages.of(context)!.password,
+                            obscureText: true,
+                            controller: _passwordController,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  FadeInUp(
+                      duration: const Duration(milliseconds: 1400),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 3, left: 3),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: const Border(
+                                bottom: BorderSide(color: Colors.black),
+                                top: BorderSide(color: Colors.black),
+                                left: BorderSide(color: Colors.black),
+                                right: BorderSide(color: Colors.black),
+                              )),
+                          child: MaterialButton(
+                            minWidth: double.infinity,
+                            height: 60,
+                            onPressed: () async {
+                              // if (_emailController.text.isEmpty ||
+                              //     _passwordController.text.isEmpty) {
+                              //   await showDialog(
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         // title: Text(Languages.of(context)!.error),
+                              //         // content: Text(Languages.of(context)!.fieldsEmpty),
+                              //         title: const Text('Error'),
+                              //         content:
+                              //             const Text('Fields cannot be empty'),
+                              //         actions: [
+                              //           TextButton(
+                              //             onPressed: () {
+                              //               Navigator.pop(context);
+                              //             },
+                              //             child: const Text('OK'),
+                              //           ),
+                              //         ],
+                              //       );
+                              //     },
+                              //   );
+                              // } else {
+                              //   var _user = User(
+                              //     email: _emailController.text,
+                              //     password: _passwordController.text,
+                              //     name: '',
+                              //   );
+
+                              //   Future<String> response =
+                              //       Provider.of<UserProvider>(context,
+                              //               listen: false)
+                              //           .signUp(_user);
+                              //   response
+                              //       .then((value) => {
+                              //             {
+                              //               Navigator.pushReplacementNamed(
+                              //                   context, '/home')
+                              //             }
+                              //           })
+                              //       .catchError(
+                              //     (error) async {
+                              //       await showDialog(
+                              //         context: context,
+                              //         builder: (context) {
+                              //           return AlertDialog(
+                              //             title: Text(
+                              //                 'Error Occured {$error.toString()}'),
+                              //             content: Text(error.toString()),
+                              //             actions: [
+                              //               TextButton(
+                              //                 onPressed: () {
+                              //                   Navigator.pop(context);
+                              //                 },
+                              //                 child: const Text('OK'),
+                              //               ),
+                              //             ],
+                              //           );
+                              //         },
+                              //       );
+                              //       return {};
+                              //     },
+                              //   );
+                              // }
+                              Navigator.pushNamed(context, '/home');
+                            },
+                            color: Colors.greenAccent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Text(
+                              Languages.of(context)!.login,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                          ))
-                      .toList(),
-                ),
+                          ),
+                        ),
+                      )),
+                  FadeInUp(
+                      duration: const Duration(milliseconds: 1500),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, '/signup');
+                              },
+                              child: Text(
+                                "Don't have an account? Sign up",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              )),
+                        ],
+                      ))
+                ],
               ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: Languages.of(context)!.email,
-                    // labelText: 'Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                  ),
-                ),
+            ),
+            FadeInUp(
+              duration: const Duration(milliseconds: 1200),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                height: MediaQuery.of(context).size.height / 5,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/background.jpg'),
+                        fit: BoxFit.cover)),
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: Languages.of(context)!.password,
-                    // labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _user = User(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      name: '',
-                    );
-                    // Provider.of<UserProvider>(context, listen: false).logIn(user: _user);
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
-                  child: Text(
-                    // Languages.of(context)!.login,
-                    'Login',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signup');
-                  },
-                  child: Text(
-                    // Languages.of(context)!.signup,
-                    'Sign Up',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Widget makeInput({label, obscureText = false, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: const TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400)),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400)),
+          ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
