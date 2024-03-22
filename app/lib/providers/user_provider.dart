@@ -116,6 +116,7 @@ class UserProvider extends ChangeNotifier {
         throw "Something went wrong";
       }
     } catch (error) {
+      print(error);
       rethrow;
     }
   }
