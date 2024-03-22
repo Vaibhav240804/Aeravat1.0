@@ -16,6 +16,7 @@ class User {
 }
 
 class UserProvider extends ChangeNotifier {
+  String _message = "";
   User _user = User(
     email: '',
     password: '',
@@ -23,6 +24,13 @@ class UserProvider extends ChangeNotifier {
   );
 
   User get user => _user;
+
+  String get smsMessage => _message;
+
+  void setMessage(String message) {
+    _message = message;
+    notifyListeners();
+  }
 
   String _lastPrediction = '';
   String _ai_Res = '';

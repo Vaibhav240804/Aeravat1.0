@@ -11,7 +11,8 @@ import 'lang/localization_delegate.dart';
 import 'package:telephony/telephony.dart';
 
 backgrounMessageHandler(SmsMessage message) async {
-  print("Background message: ${message.body}");
+  debugPrint("Background message: ${message.body}");
+  UserProvider().setMessage(message.body.toString());
 }
 
 void main() {
@@ -30,38 +31,47 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Telephony telephony = Telephony.instance;
+  UserProvider user = UserProvider();
 
   Future<void> checkPermissions() async {
     bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
     if (permissionsGranted != null && permissionsGranted) {
-      print("Permissions granted");
+      debugPrint("Permissions granted");
     } else {
-      print("Permissions not granted");
+      debugPrint("Permissions not granted");
     }
   }
 
-  late String _message;
+  late SmsMessage _message;
 
   @override
   void initState() {
     super.initState();
     checkPermissions();
-    final inbox = telephony.getInboxSms();
-    
-
     telephony.listenIncomingSms(
       onNewMessage: (SmsMessage message) {
-        print("New message: ${message.body}");
+        debugPrint("New message: ${message.body}");
         setState(() {
-          _message = message.body!;
+          _message = message;
         });
+        Provider.of<UserProvider>(context,listen: true).setMessage(message.body.toString());
       },
       onBackgroundMessage: backgrounMessageHandler,
     );
+    final inbox = telephony.getInboxSms();
+
+    inbox.then((value) {
+      setState(() {
+        _message = value[0];
+      });
+      Provider.of<UserProvider>(context).setMessage(value[0].body.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    Provider.of<UserProvider>(context,listen: true).setMessage(_message.body.toString());
     return MaterialApp(
       builder: (context, child) {
         return MediaQuery(
