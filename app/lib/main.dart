@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'lang/localization_delegate.dart';
+import 'package:telephony/telephony.dart';
 
+backgrounMessageHandler(SmsMessage message) async {
+  debugPrint("Background message: ${message.body}");
+  UserProvider().setMessage(message.body.toString());
+}
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -25,9 +30,48 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
+  final Telephony telephony = Telephony.instance;
+  UserProvider user = UserProvider();
+
+  Future<void> checkPermissions() async {
+    bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+    if (permissionsGranted != null && permissionsGranted) {
+      debugPrint("Permissions granted");
+    } else {
+      debugPrint("Permissions not granted");
+    }
+  }
+
+  late SmsMessage _message;
+
+  @override
+  void initState() {
+    super.initState();
+    checkPermissions();
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage message) {
+        debugPrint("New message: ${message.body}");
+        setState(() {
+          _message = message;
+        });
+        Provider.of<UserProvider>(context,listen: true).setMessage(message.body.toString());
+      },
+      onBackgroundMessage: backgrounMessageHandler,
+    );
+    final inbox = telephony.getInboxSms();
+
+    inbox.then((value) {
+      setState(() {
+        _message = value[0];
+      });
+      Provider.of<UserProvider>(context).setMessage(value[0].body.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+    Provider.of<UserProvider>(context,listen: true).setMessage(_message.body.toString());
     return MaterialApp(
       builder: (context, child) {
         return MediaQuery(
@@ -39,9 +83,9 @@ class _MyAppState extends State<MyApp> {
       title: "Krishi Sahayak",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.brown.shade300,
-          secondary: Colors.lime.shade400,
-          primary: Colors.brown,
+          seedColor: Colors.blueAccent,
+          secondary: Colors.greenAccent,
+          primary: Colors.white12,
         ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
@@ -50,31 +94,6 @@ class _MyAppState extends State<MyApp> {
           bodySmall: TextStyle(fontSize: 12.0),
           bodyMedium: TextStyle(fontSize: 16.0),
           bodyLarge: TextStyle(fontSize: 20.0),
-        ),
-        // push notification if soil data is not available-->
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.amber.shade400,
-          contentTextStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.amber,
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-          elevation: 2,
-        ),
-
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.amber.shade400,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey.shade500,
-          selectedIconTheme: const IconThemeData(size: 30.0),
         ),
         useMaterial3: true,
       ),
@@ -112,5 +131,4 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
-
-  }
+}
