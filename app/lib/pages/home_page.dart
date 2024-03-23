@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
@@ -18,27 +19,20 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "test",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          AnimatedContainer(
-            duration: const Duration(seconds: 2),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            width: 100,
-            height: 100,
-            curve: Curves.bounceInOut,
-            child: userprovider.smsMessage == ""
-                ? const Icon(Icons.message)
-                : Text(
-                    userprovider.smsMessage,
+          FadeInDown(
+            duration: const Duration(milliseconds: 500),
+            child: 
+                Text(
+                    userprovider.smsMessage == "" ? "Couldn't fetch latest messages": userprovider.smsMessage,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
           ),
-          const SizedBox(
-            height: 20,
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              
+            },
+            child: const Text('Refresh'),
           ),
         ],
       ),
