@@ -1,10 +1,9 @@
-import 'dart:math';
+import 'package:app/main.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app/pages/result_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:translator/translator.dart';
 import 'dart:io';
 
 class CamScreen extends StatefulWidget {
@@ -27,7 +26,9 @@ class _CamScreenState extends State<CamScreen> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    _future = _requestCameraPermission();
+    _future = requestCameraPermission().then((granted) {
+      _isPermissionGranted = granted;
+    });
   }
 
   @override
@@ -113,11 +114,6 @@ class _CamScreenState extends State<CamScreen> with WidgetsBindingObserver {
         );
       },
     );
-  }
-
-  Future<void> _requestCameraPermission() async {
-    final status = await Permission.camera.request();
-    _isPermissionGranted = status == PermissionStatus.granted;
   }
 
   void _startCamera() {

@@ -52,7 +52,7 @@ class _ProfileState extends State<Profile> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            "${Languages.of(context)!.email} :  ${Provider.of<UserProvider>(context).user.email}",
+                            "${Languages.of(context)!.email} :  ${Provider.of<UserProvider>(context,listen: false).user.email}",
                             // "Email :  ${Provider.of<UserProvider>(context).user.email}",
                             style: Theme.of(context).textTheme.titleLarge,
                             textAlign: TextAlign.center,
