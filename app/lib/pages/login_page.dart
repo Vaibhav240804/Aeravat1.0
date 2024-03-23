@@ -5,6 +5,19 @@ import 'package:app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+bool validateEmail(String email) {
+  const pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  final regExp = RegExp(pattern);
+
+  return regExp.hasMatch(email);
+}
+
+bool validatePassword(String password) {
+  return password.length >= 6;
+}
+
+
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
 
@@ -94,71 +107,93 @@ class _LogInPageState extends State<LogInPage> {
                             minWidth: double.infinity,
                             height: 60,
                             onPressed: () async {
-                              // if (_emailController.text.isEmpty ||
-                              //     _passwordController.text.isEmpty) {
-                              //   await showDialog(
-                              //     context: context,
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         // title: Text(Languages.of(context)!.error),
-                              //         // content: Text(Languages.of(context)!.fieldsEmpty),
-                              //         title: const Text('Error'),
-                              //         content:
-                              //             const Text('Fields cannot be empty'),
-                              //         actions: [
-                              //           TextButton(
-                              //             onPressed: () {
-                              //               Navigator.pop(context);
-                              //             },
-                              //             child: const Text('OK'),
-                              //           ),
-                              //         ],
-                              //       );
-                              //     },
-                              //   );
-                              // } else {
-                              //   var _user = User(
-                              //     email: _emailController.text,
-                              //     password: _passwordController.text,
-                              //     name: '',
-                              //   );
-
-                              //   Future<String> response =
-                              //       Provider.of<UserProvider>(context,
-                              //               listen: false)
-                              //           .signUp(_user);
-                              //   response
-                              //       .then((value) => {
-                              //             {
-                              //               Navigator.pushReplacementNamed(
-                              //                   context, '/home')
-                              //             }
-                              //           })
-                              //       .catchError(
-                              //     (error) async {
-                              //       await showDialog(
-                              //         context: context,
-                              //         builder: (context) {
-                              //           return AlertDialog(
-                              //             title: Text(
-                              //                 'Error Occured {$error.toString()}'),
-                              //             content: Text(error.toString()),
-                              //             actions: [
-                              //               TextButton(
-                              //                 onPressed: () {
-                              //                   Navigator.pop(context);
-                              //                 },
-                              //                 child: const Text('OK'),
-                              //               ),
-                              //             ],
-                              //           );
-                              //         },
-                              //       );
-                              //       return {};
-                              //     },
-                              //   );
-                              // }
-                              Navigator.pushNamed(context, '/home');
+                              if (_emailController.text.isEmpty ||
+                                  _passwordController.text.isEmpty) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      // title: Text(Languages.of(context)!.error),
+                                      // content: Text(Languages.of(context)!.fieldsEmpty),
+                                      title: const Icon(Icons.error,
+                                          color: Colors.red),
+                                      content:
+                                          const Text('Fields cannot be empty'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } 
+                              else if(
+                                !validateEmail(_emailController.text) || !validatePassword(_passwordController.text)
+                              ){
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Icon(Icons.error,
+                                          color: Colors.red),
+                                      content: const Text('Invalid email or password'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                              else {
+                                var _user = User(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  name: '',
+                                );
+                                Future<String> response =
+                                    Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .logIn(_user);
+                                response
+                                    .then((value) => {
+                                          {
+                                            Navigator.pushNamed(
+                                                context, '/otpverify')
+                                          }
+                                        })
+                                    .catchError(
+                                  (error) async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Icon(Icons.error,
+                                              color: Colors.red),
+                                          content: Text(error.toString()),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    return {};
+                                  },
+                                );
+                              }
                             },
                             color: Colors.greenAccent,
                             elevation: 0,
