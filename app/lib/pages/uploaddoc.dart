@@ -45,12 +45,42 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                     const SizedBox(
                       height: 10,
                     ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Generate Report",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ))
+                    Provider.of<UserProvider>(context, listen: false)
+                            .analysis
+                            .isEmpty
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .getAnalysis();
+                            },
+                            child: Text(
+                              "Generate Report",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              const Text(
+                                'Analysis:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              for (var entry in Provider.of<UserProvider>(
+                                      context,
+                                      listen: false)
+                                  .analysis
+                                  .entries)
+                                Text(
+                                  '${entry.key} : ${entry.value}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -67,7 +97,8 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                   } else {
                     for (var element in _result!.files) {
                       print(element.name);
-                      Provider.of<UserProvider>(context).setFile(element);
+                      Provider.of<UserProvider>(context, listen: false)
+                          .setFile(element);
                       setState(() {
                         _result = _result;
                       });

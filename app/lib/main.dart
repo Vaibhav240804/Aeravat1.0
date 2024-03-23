@@ -1,4 +1,6 @@
+import 'package:app/pages/home_page.dart';
 import 'package:app/pages/login_page.dart';
+import 'package:app/pages/otp_field.dart';
 import 'package:app/pages/profile.dart';
 import 'package:app/pages/routes.dart';
 import 'package:app/pages/signup_page.dart';
@@ -6,6 +8,7 @@ import 'package:app/providers/providers.dart';
 import 'package:app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'lang/localization_delegate.dart';
 import 'package:telephony/telephony.dart';
@@ -21,6 +24,16 @@ void main() {
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => UserProvider()),
   ], child: const MyApp()));
+}
+
+Future<bool> requestCameraPermission() async {
+  
+  final status = await Permission.camera.request();
+  if (status.isGranted) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -54,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           _message = message;
         });
-        Provider.of<UserProvider>(context, listen: true).setMessage(message);
+        Provider.of<UserProvider>(context, listen: false).setMessage(message);
       },
       onBackgroundMessage: backgrounMessageHandler,
     );
@@ -64,7 +77,7 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _message = value[0];
       });
-      Provider.of<UserProvider>(context).setMessage(value[0]);
+      Provider.of<UserProvider>(context, listen: false).setMessage(value[0]);
     });
   }
 
@@ -97,13 +110,14 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       themeMode: Provider.of<ThemeProvider>(context).themeMode,
-      home: const LogInPage(),
+      home: const Routes(),
       locale: Provider.of<LocaleProvider>(context).locale,
       routes: {
         '/profile': (context) => const Profile(),
         '/home': (context) => const Routes(),
         '/login': (context) => const LogInPage(),
         '/signup': (context) => const SignUpPage(),
+        '/otpverify': (context) => const OTPScreen(),
       },
       supportedLocales: const [
         Locale('en'),

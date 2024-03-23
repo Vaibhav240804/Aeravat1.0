@@ -4,7 +4,18 @@ import 'package:app/lang/abs_lan.dart';
 import 'package:app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './signup_page.dart';
+
+bool validateEmail(String email) {
+  const pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  final regExp = RegExp(pattern);
+
+  return regExp.hasMatch(email);
+}
+
+bool validatePassword(String password) {
+  return password.length >= 6;
+}
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -55,7 +66,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: selectlangCard(context),
                         ),
                         const SizedBox(
-                          height: 20,),
+                          height: 20,
+                        ),
                         FadeInUp(
                           duration: const Duration(
                             milliseconds: 1200,
@@ -104,16 +116,40 @@ class _SignUpPageState extends State<SignUpPage> {
                             height: 60,
                             onPressed: () async {
                               if (_emailController.text.isEmpty ||
-                                  _passwordController.text.isEmpty || _nameController.text.isEmpty ) {
+                                  _passwordController.text.isEmpty ||
+                                  _nameController.text.isEmpty) {
                                 await showDialog(
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
                                       // title: Text(Languages.of(context)!.error),
                                       // content: Text(Languages.of(context)!.fieldsEmpty),
-                                      title: const Text('Error'),
+                                      title: const Icon(Icons.error,
+                                          color: Colors.red),
                                       content:
                                           const Text('Fields cannot be empty'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else if (!validateEmail(
+                                      _emailController.text) ||
+                                  !validatePassword(_passwordController.text)) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Icon(Icons.error,
+                                          color: Colors.red),
+                                      content: const Text(
+                                          'Invalid email or password. Please try again.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
@@ -148,8 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text(
-                                            'Error Occured {$error.toString()}'),
+                                        title:const Icon(Icons.error, color: Colors.red),
                                         content: Text(error.toString()),
                                         actions: [
                                           TextButton(
