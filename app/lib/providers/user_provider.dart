@@ -120,7 +120,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<String> getChatbotResponse(String message) async {
-    final response = await http.get(Uri.parse('http://172.16.30.54:3000/rag'));
+    final response = await http.get(Uri.parse('http://172.16.30.63:3000/rag'));
     if (response.statusCode == 200) {
       return response.body;
     } else {
@@ -138,7 +138,7 @@ class UserProvider extends ChangeNotifier {
   Future<String> verifyOtp(String otp) async {
     try {
       final url =
-          Uri.parse('http://172.16.30.54:3000/user/verify-otp'); // Adjust URL
+          Uri.parse('http://172.16.30.63:3000/user/verify-otp'); // Adjust URL
       final response = await http.post(
         url,
         body: {
@@ -165,7 +165,7 @@ class UserProvider extends ChangeNotifier {
   Future<String> getUserInfo(String email) async {
     try {
       final url = Uri.parse(
-          'http://172.16.30.54:3000/user/get-user'); // Adjust URL
+          'http://172.16.30.63:3000/user/get-user'); // Adjust URL
       final response = await http.post(
         url,
         body: {
@@ -193,7 +193,7 @@ class UserProvider extends ChangeNotifier {
     final password = user.password;
     final name = user.name;
     try {
-      var url = Uri.parse('http://172.16.30.54:3000/user/register');
+      var url = Uri.parse('http://172.16.30.63:3000/user/register');
       var response = await http.post(
         url,
         body: {
@@ -228,7 +228,7 @@ class UserProvider extends ChangeNotifier {
     final password = user.password;
     try {
       var url = Uri.parse(
-          'http://172.16.30.54:3000/user/login'); // Replace with your backend URL
+          'http://172.16.30.63:3000/user/login'); // Replace with your backend URL
       var response = await http.post(
         url,
         body: {
