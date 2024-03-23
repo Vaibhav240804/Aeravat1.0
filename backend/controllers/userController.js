@@ -47,10 +47,13 @@ class UserController {
 
   register = async (req, res) => {
     try {
-      const { name, email, password, phone, bio } = req.body;
+      console.log(req.body['email']);
+      const name = req.body['name'];
+      const email = req.body['email'];
+      const password = req.body['password'];
       const passwordHash = await bcrypt.hash(password, 10);
 
-      if (!name || !email || !password || !phone)
+      if (!name || !email || !password)
         return res.status(400).json({ message: "Please fill all the fields" });
       const existingUser = await User.findOne({ email });
       if (existingUser)
@@ -61,7 +64,6 @@ class UserController {
       const newUser = new User({
         name,
         email,
-        phone,
         password: passwordHash,
       });
       await newUser.save();
@@ -91,15 +93,18 @@ class UserController {
 
   login = async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const email = req.body['email'];
+      const password = req.body['password'];
+      console.log(password);
       const user = await User.findOne({ email });
       if (!user)
         return res.status(404).json({ message: "User does not exist!" });
       const isMatch = await bcrypt.compare(password, user.password);
+      console.log(isMatch);
       if (!isMatch)
         return res.status(400).json({ message: "Incorrect Password!" });
-
-      await this.sendEmail(email, "login"); // Send OTP for login
+      
+      await this.sendEmail(email, "login"); 
       res.status(200).json({
         message: "OTP sent to registered email. Please enter OTP to login.",
       });
@@ -112,7 +117,8 @@ class UserController {
   // verify otp
   verifyOtp = async (req, res) => {
     try {
-      const { email, otp } = req.body;
+      const email = req.body['email'];
+      const otp = req.body['otp'];
       const user = await User.findOne({ email });
       if (!user)
         return res.status(404).json({ message: "User does not exist!" });
@@ -135,7 +141,7 @@ class UserController {
           name: user.name,
           pfp: user.pfp,
         },
-        secretKey,
+        "secret",
         { expiresIn: "12h" }
       );
       res.cookie("jwt", token, { httpOnly: true });

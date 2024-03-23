@@ -2,21 +2,27 @@ const express = require("express");
 const { spawn } = require("child_process");
 const bodyParser = require("body-parser");
 const uR = require("./routers/userRouter.js");
+const cors = require("cors");
+const init = require("./db/config.js");
 const app = express();
 const port = 3000;
 const axios = require('axios');
 
+app.use(cors());
+init();
 
 const bR = express.Router();
-app.use("/api", bR);
-bR.use("/user", uR);
-
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/api", bR);
+bR.use("/user", uR);
+
+
 app.post("/sms", (req, res) => {
-  const smsText = req.body.sms_text;
+  const smsText = req.body['sms_text'];
+  console.log(smsText);
 
   const pythonProcess = spawn("python", ["../SMS SPAM/SMS.py", smsText]);
 
@@ -32,6 +38,7 @@ app.post("/sms", (req, res) => {
 
   pythonProcess.on("close", (code) => {
     console.log(`Python script exited with code ${code}`);
+    console.log(prediction);
     res.json({ prediction: prediction.trim() });
   });
 });

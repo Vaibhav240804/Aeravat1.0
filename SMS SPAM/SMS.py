@@ -11,8 +11,8 @@ warnings.filterwarnings("ignore")
 
 def predict_sms(sms_text):
     # Load the saved vectorizer and model
-    vectorizer = pickle.load(open('C:/Users/adity/OneDrive/Desktop/Hackathon/Aeravat1.0/SMS SPAM/vectorizer.pkl', 'rb'))
-    model = pickle.load(open('C:/Users/adity/OneDrive/Desktop/Hackathon/Aeravat1.0/SMS SPAM/model.pkl', 'rb'))
+    vectorizer = pickle.load(open('D:/COLLEGE/Hackathons/Aeravat/repository/SMS SPAM/vectorizer.pkl', 'rb'))
+    model = pickle.load(open('D:/COLLEGE/Hackathons/Aeravat/repository/SMS SPAM/model.pkl', 'rb'))
     
     # Preprocess the input SMS message
     def transform_text(text):
@@ -49,6 +49,7 @@ def predict_sms(sms_text):
     prediction = model.predict(sms_vectorized)
     
     # Return the prediction
+    print(prediction)
     if prediction[0] == 1:
         return "Spam"
     else:

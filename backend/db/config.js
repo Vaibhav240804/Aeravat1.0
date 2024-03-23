@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const DB =
   "mongodb+srv://direct2vaibhavkore:OzcQP0oIIlM9XAFz@cluster0.suvqma4.mongodb.net/?retryWrites=true&w=majority";
@@ -16,4 +16,4 @@ function init() {
     .catch((err) => console.log(`DB connection failed ${err}`));
 }
 
-export default init;
+module.exports = init;

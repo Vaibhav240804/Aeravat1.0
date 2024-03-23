@@ -167,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   password: _passwordController.text,
                                   name: _nameController.text,
                                 );
-
+                                print(_user.email);
                                 Future<String> response =
                                     Provider.of<UserProvider>(context,
                                             listen: false)

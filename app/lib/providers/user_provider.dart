@@ -50,7 +50,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> classifyMsg() async {
     try {
-      var url = Uri.parse('http://172.16.30.54:3000/sms');
+      var url = Uri.parse('http://192.168.61.84:3000/sms');
       var response = await http.post(
         url,
         body: {
@@ -105,7 +105,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<Map<String, double>> getAnalysis() async {
     try {
-      var url = Uri.parse('http://172.16.30.54:5000/process_pdf');
+      var url = Uri.parse('http://192.168.61.84:5000/process_pdf');
       var request = http.MultipartRequest('POST', url)
         ..files.add(await http.MultipartFile.fromPath('file', _file.path!));
       var response = await request.send();
@@ -120,7 +120,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<String> getChatbotResponse(String message) async {
-    final response = await http.get(Uri.parse('http://172.16.30.63:3000/rag'));
+    final response = await http.get(Uri.parse('http://192.168.61.84:3000/rag'));
     if (response.statusCode == 200) {
       return response.body;
     } else {
@@ -138,7 +138,7 @@ class UserProvider extends ChangeNotifier {
   Future<String> verifyOtp(String otp) async {
     try {
       final url =
-          Uri.parse('http://172.16.30.63:3000/user/verify-otp'); // Adjust URL
+          Uri.parse('http://192.168.61.84:3000/api/user/verify-otp'); // Adjust URL
       final response = await http.post(
         url,
         body: {
@@ -165,7 +165,7 @@ class UserProvider extends ChangeNotifier {
   Future<String> getUserInfo(String email) async {
     try {
       final url = Uri.parse(
-          'http://172.16.30.63:3000/user/get-user'); // Adjust URL
+          'http://192.168.61.84:3000/api/user/get-user'); // Adjust URL
       final response = await http.post(
         url,
         body: {
@@ -188,18 +188,19 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<String> signUp(User user) async {
+    print(user.email);  
     final email = user.email;
     _email = email;
     final password = user.password;
     final name = user.name;
     try {
-      var url = Uri.parse('http://172.16.30.63:3000/user/register');
+      var url = Uri.parse('http://192.168.61.84:3000/api/user/register');
       var response = await http.post(
         url,
         body: {
           'email': email,
-          'password': password,
           'name': name,
+          'password': password,
         },
       );
       if (response.statusCode == 200) {
@@ -228,7 +229,7 @@ class UserProvider extends ChangeNotifier {
     final password = user.password;
     try {
       var url = Uri.parse(
-          'http://172.16.30.63:3000/user/login'); // Replace with your backend URL
+          'http://192.168.61.84:3000/api/user/login'); // Replace with your backend URL
       var response = await http.post(
         url,
         body: {
@@ -238,16 +239,6 @@ class UserProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        final token = response.headers['set-cookie'];
-        debugPrint(response.headers['set-cookie']);
-        if (token == null) {
-          throw "Token not found in response headers";
-        }
-        _user.email = user.email;
-        _user.password = user.password;
-        _user.name = json.decode(response.body)['name'];
-        await storeCookie(token);
-        notifyListeners();
         return Future(() => 'success');
       } else {
         throw "Something went wrong";
@@ -258,6 +249,8 @@ class UserProvider extends ChangeNotifier {
     }
   }
 }
+
+
 
 Future<void> storeCookie(String cookieValue) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

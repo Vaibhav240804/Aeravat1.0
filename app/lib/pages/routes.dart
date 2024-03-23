@@ -103,7 +103,7 @@ class _RoutesState extends State<Routes> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(
-              Icons.assistant_outlined,
+              Icons.document_scanner,
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             label: Languages.of(context)!.pdfanalytics,
