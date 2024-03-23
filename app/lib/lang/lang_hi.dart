@@ -11,13 +11,13 @@ class LanguageHi extends Languages {
   String get labelSelectLanguage => "भाषा चुनें";
 
   @override
-  String get marketsNearby => "आस-पास के बाज़ार";
+  String get scanner => "चित्रान्वीक्षक";
 
   @override
   String get personalCal => "व्यक्तिगत कैलेंडर";
 
   @override
-  String get weatherSoil => "मौसम और मिट्टी";
+  String get pdfanalytics => "विश्लेषण प्राप्त करें";
 
   @override
   String get profile => "प्रोफ़ाइल";

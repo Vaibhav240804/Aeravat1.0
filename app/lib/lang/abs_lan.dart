@@ -9,11 +9,11 @@ abstract class Languages {
 
   String get home;
 
-  String get marketsNearby;
+  String get scanner;
 
   String get labelSelectLanguage;
 
-  String get weatherSoil;
+  String get pdfanalytics;
 
   String get personalCal;
 
@@ -38,7 +38,6 @@ abstract class Languages {
   String get signup;
 
   String get login;
-
 
   static languagesList() {}
 

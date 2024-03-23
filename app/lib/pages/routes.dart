@@ -98,7 +98,7 @@ class _RoutesState extends State<Routes> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.camera),
-            label: Languages.of(context)!.marketsNearby,
+            label: Languages.of(context)!.scanner,
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
           BottomNavigationBarItem(
@@ -106,14 +106,14 @@ class _RoutesState extends State<Routes> {
               Icons.assistant_outlined,
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: Languages.of(context)!.weatherSoil,
+            label: Languages.of(context)!.pdfanalytics,
           ),
           BottomNavigationBarItem(
             icon: const Icon(
               Icons.assistant_outlined,
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            label: Languages.of(context)!.weatherSoil,
+            label: Languages.of(context)!.pdfanalytics,
           ),
         ],
       ),

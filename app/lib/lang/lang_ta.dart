@@ -11,13 +11,13 @@ class LanguageTa extends Languages {
   String get labelSelectLanguage => "மொழியைத் தேர்ந்தெடுக்கவும்";
 
   @override
-  String get marketsNearby => "அருகிலுள்ள சந்தைகள்";
+  String get scanner => "ஸ்கேனர்";
 
   @override
   String get personalCal => "தனிப்பட்ட காலண்டர்";
 
   @override
-  String get weatherSoil => "வானிலை மற்றும் மண்";
+  String get pdfanalytics => "பகுப்பாய்வு பெறவும்";
 
   @override
   String get profile => "சுயவிவரம்";
