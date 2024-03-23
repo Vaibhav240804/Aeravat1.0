@@ -7,12 +7,12 @@ import warnings
 import sklearn
 
 # Ignore scikit-learn warnings
-warnings.filterwarnings("ignore", category=sklearn.exceptions.InconsistentVersionWarning)
+warnings.filterwarnings("ignore")
 
 def predict_sms(sms_text):
     # Load the saved vectorizer and model
-    vectorizer = pickle.load(open('SMS SPAM/vectorizer.pkl', 'rb'))
-    model = pickle.load(open('SMS SPAM/model.pkl', 'rb'))
+    vectorizer = pickle.load(open('C:/Users/adity/OneDrive/Desktop/Hackathon/Aeravat1.0/SMS SPAM/vectorizer.pkl', 'rb'))
+    model = pickle.load(open('C:/Users/adity/OneDrive/Desktop/Hackathon/Aeravat1.0/SMS SPAM/model.pkl', 'rb'))
     
     # Preprocess the input SMS message
     def transform_text(text):
