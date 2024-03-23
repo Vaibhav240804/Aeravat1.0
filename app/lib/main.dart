@@ -27,7 +27,7 @@ void main() {
 }
 
 Future<bool> requestCameraPermission() async {
-  
+
   final status = await Permission.camera.request();
   if (status.isGranted) {
     return true;
@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       themeMode: Provider.of<ThemeProvider>(context).themeMode,
-      home: const Routes(),
+      home: const LogInPage(),
       locale: Provider.of<LocaleProvider>(context).locale,
       routes: {
         '/profile': (context) => const Profile(),
