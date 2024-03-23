@@ -1,4 +1,6 @@
-// ignore_for_file: file_names
+import 'package:app/pages/chat_bot.dart';
+import 'package:app/pages/doc_help.dart';
+import 'package:app/pages/uploaddoc.dart';
 import 'package:flutter/material.dart';
 import 'package:app/lang/abs_lan.dart';
 import 'package:app/pages/home_page.dart';
@@ -123,11 +125,11 @@ class _RoutesState extends State<Routes> {
       case 0:
         return const HomePage();
       case 1:
-        return Container();
+        return const CamScreen();
       case 2:
-        return Container();
+        return const FilePickerDemo();
       case 3:
-        return Container();
+        return const ChatBot();
       default:
         return Container();
     }

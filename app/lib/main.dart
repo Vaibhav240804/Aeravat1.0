@@ -11,8 +11,8 @@ import 'lang/localization_delegate.dart';
 import 'package:telephony/telephony.dart';
 
 backgrounMessageHandler(SmsMessage message) async {
-  debugPrint("Background message: ${message.body}");
-  UserProvider().setMessage(message.body.toString());
+  debugPrint("Background message: ${message.toString()}");
+  UserProvider().setMessage(message);
 }
 
 void main() {
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           _message = message;
         });
-        Provider.of<UserProvider>(context,listen: true).setMessage(message.body.toString());
+        Provider.of<UserProvider>(context, listen: true).setMessage(message);
       },
       onBackgroundMessage: backgrounMessageHandler,
     );
@@ -64,14 +64,13 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _message = value[0];
       });
-      Provider.of<UserProvider>(context).setMessage(value[0].body.toString());
+      Provider.of<UserProvider>(context).setMessage(value[0]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    Provider.of<UserProvider>(context,listen: true).setMessage(_message.body.toString());
+    Provider.of<UserProvider>(context, listen: true).setMessage(_message);
     return MaterialApp(
       builder: (context, child) {
         return MediaQuery(
