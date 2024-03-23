@@ -11,13 +11,13 @@ class LanguageMr extends Languages {
   String get labelSelectLanguage => "भाषा निवडा";
 
   @override
-  String get marketsNearby => "जवळच्या बाजारपेठा";
+  String get scanner => "स्कॅनर";
 
   @override
   String get personalCal => "वैयक्तिक कॅलेंडर";
 
   @override
-  String get weatherSoil => "हवामान आणि माती";
+  String get pdfanalytics => "विश्लेषण मिळवा";
 
   @override
   String get profile => "प्रोफाइल";

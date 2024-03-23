@@ -11,13 +11,13 @@ class LanguageKn extends Languages {
   String get labelSelectLanguage => "ಭಾಷೆಯನ್ನು ಆರಿಸಿ";
 
   @override
-  String get marketsNearby => "ಹತ್ತಿರದ ಮಾರುಕಟ್ಟೆಗಳು";
+  String get scanner => "ಸ್ಕ್ಯಾನರ್";
 
   @override
   String get personalCal => "ವೈಯಕ್ತಿಕ ಕ್ಯಾಲೆಂಡರ್";
 
   @override
-  String get weatherSoil => "ಹವಾಮಾನ ಮತ್ತು ಮಣ್ಣು";
+  String get pdfanalytics => "ವಿಶ್ಲೇಷಣೆ ಪಡೆಯಿರಿ";
 
   @override
   String get profile => "ಪ್ರೊಫೈಲ್";

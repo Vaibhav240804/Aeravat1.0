@@ -11,13 +11,13 @@ class LanguageEn extends Languages {
   String get labelSelectLanguage => "Select Language";
 
   @override
-  String get marketsNearby => "Markets Nearby";
+  String get scanner => "Document Scanner";
 
   @override
   String get personalCal => "Personal Calendar";
 
   @override
-  String get weatherSoil => "Weather & Soil";
+  String get pdfanalytics => "Get Analysis";
 
   @override
   String get profile => "Profile";

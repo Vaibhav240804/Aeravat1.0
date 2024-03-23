@@ -11,13 +11,13 @@ class LanguageBn extends Languages {
   String get labelSelectLanguage => "ভাষা নির্বাচন করুন";
 
   @override
-  String get marketsNearby => "আশেপাশের বাজার";
+  String get scanner => "স্ক্যানার";
 
   @override
   String get personalCal => "ব্যক্তিগত ক্যালেন্ডার";
 
   @override
-  String get weatherSoil => "আবহাওয়া এবং মাটি";
+  String get pdfanalytics => "বিশ্লেষণ পান";
 
   @override
   String get profile => "প্রোফাইল";
